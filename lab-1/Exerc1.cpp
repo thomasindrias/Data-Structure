@@ -178,8 +178,22 @@ bool even(int i)
 void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 {
 	//ADD IMPLEMENTATION
+	std::vector<int> vEven;
+	
+	std::reverse(V.begin(), V.end());
+	for (auto it = V.begin(); it != V.end(); /* NOTHING */)
+	{
+		if (p(*it)){
+			vEven.push_back(*it);
+			it = V.erase(it);
+		}
+		else
+			++it;
+	}
 
-    std::cout << "Note implemented, yet!!\n";
+	V.insert(V.end(), vEven.begin(), vEven.end());
+	std::reverse(V.begin(), V.end());
+    //std::cout << "Note implemented, yet!!\n";
 }
 
 
@@ -192,7 +206,6 @@ namespace TND004
 	std::vector<int>::iterator stable_partition(std::vector<int>& V, std::vector<int>::iterator first, std::vector<int>::iterator last, Test p)
 	{
 		//ADD IMPLEMENTATION
-
         std::cout << "Note implemented, yet!!\n";
 
         return std::begin(V); //this is dummy code that should be removed
