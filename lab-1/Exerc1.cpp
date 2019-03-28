@@ -206,9 +206,19 @@ namespace TND004
 	std::vector<int>::iterator stable_partition(std::vector<int>& V, std::vector<int>::iterator first, std::vector<int>::iterator last, Test p)
 	{
 		//ADD IMPLEMENTATION
-        std::cout << "Note implemented, yet!!\n";
+		std::vector<int>::iterator mid = first + ((last - first) / 2);
 
-        return std::begin(V); //this is dummy code that should be removed
+		if (first == last) {
+			if (p(*first)) return first + 1;
+			else return first;
+		}
+
+		std::vector<int>::iterator it1 = TND004::stable_partition(V, first, mid - 1, p);
+		std::vector<int>::iterator it3 = TND004::stable_partition(V, mid, last, p);
+
+		return std::rotate(it1, mid, it3);
+
+        //return std::begin(V); //this is dummy code that should be removed
 	}
 }
 
