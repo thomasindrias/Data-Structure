@@ -180,7 +180,7 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 	//ADD IMPLEMENTATION
 	std::vector<int> vEven;
 	
-	std::reverse(V.begin(), V.end());
+	//std::reverse(V.begin(), V.end());
 	for (auto it = V.begin(); it != V.end(); /* NOTHING */)
 	{
 		if (p(*it)){
@@ -191,8 +191,8 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 			++it;
 	}
 
-	V.insert(V.end(), vEven.begin(), vEven.end());
-	std::reverse(V.begin(), V.end());
+	V.insert(V.begin(), vEven.begin(), vEven.end());
+	//std::reverse(V.begin(), V.end());
     //std::cout << "Note implemented, yet!!\n";
 }
 
@@ -206,14 +206,15 @@ namespace TND004
 	std::vector<int>::iterator stable_partition(std::vector<int>& V, std::vector<int>::iterator first, std::vector<int>::iterator last, Test p)
 	{
 		//ADD IMPLEMENTATION
-		std::vector<int>::iterator mid = first + ((last - first) / 2);
+		
 
-		if (first == last) {
+		if (first == last-1) {
 			if (p(*first)) return first + 1;
 			else return first;
 		}
+		std::vector<int>::iterator mid = first + ((last - first) / 2);
 
-		std::vector<int>::iterator it1 = TND004::stable_partition(V, first, mid - 1, p);
+		std::vector<int>::iterator it1 = TND004::stable_partition(V, first, mid, p);
 		std::vector<int>::iterator it3 = TND004::stable_partition(V, mid, last, p);
 
 		return std::rotate(it1, mid, it3);
