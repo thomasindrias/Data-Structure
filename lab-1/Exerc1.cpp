@@ -177,23 +177,30 @@ bool even(int i)
 //Iterative algorithm
 void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 {
-	//ADD IMPLEMENTATION
-	std::vector<int> vEven;
-	
-	//std::reverse(V.begin(), V.end());
-	for (auto it = V.begin(); it != V.end(); /* NOTHING */)
-	{
-		if (p(*it)){
-			vEven.push_back(*it);
-			it = V.erase(it);
+	std::vector<int> vRes;
+	vRes.resize(V.size());
+
+	int size = 0;
+
+	for (int i = 0; i < V.size(); i++) {
+		
+		if (p(V[i])) {
+			vRes[size] = V[i];
+			size++;
 		}
-		else
-			++it;
 	}
 
-	V.insert(V.begin(), vEven.begin(), vEven.end());
-	//std::reverse(V.begin(), V.end());
-    //std::cout << "Note implemented, yet!!\n";
+	
+	for (int i = 0; i < V.size(); i++) {
+
+		if (!p(V[i])) {
+			vRes[size] = V[i];
+			size++;
+		}
+	}
+	
+
+	V.assign(vRes.begin(), vRes.end());
 }
 
 
@@ -209,8 +216,9 @@ namespace TND004
 		
 
 		if (first == last-1) {
-			if (p(*first)) return first + 1;
-			else return first;
+			if (p(*first)) return first+1;
+			
+			return first;
 		}
 		std::vector<int>::iterator mid = first + ((last - first) / 2);
 
