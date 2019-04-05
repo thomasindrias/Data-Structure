@@ -180,26 +180,23 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 	std::vector<int> vRes;
 	vRes.resize(V.size());
 
-	int size = 0;
+	int itBegin = 0, itEnd = V.size()-1;
 
-	for (int i = 0; i < V.size(); i++) { // O(n)
-		
-		if (p(V[i])) {
-			vRes[size] = V[i];
-			size++;
+	for (int i = 0; i < V.size(); i++)
+	{ // O(n)
+
+		if (p(V[i]))
+		{
+			vRes[itBegin] = V[i];
+			itBegin++;
 		}
-	}
-
-	
-	for (int i = 0; i < V.size(); i++) { // O(n)
-
-		if (!p(V[i])) {
-			vRes[size] = V[i];
-			size++;
+		else {
+			vRes[itEnd] = V[i];
+			itEnd--;
 		}
 	}
 	
-
+	std::reverse(vRes.begin() + itBegin, vRes.end()); // O(n)
 	V.assign(vRes.begin(), vRes.end()); // O(n)
 }
 
