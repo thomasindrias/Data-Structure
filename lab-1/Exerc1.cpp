@@ -182,7 +182,7 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 
 	int size = 0;
 
-	for (int i = 0; i < V.size(); i++) {
+	for (int i = 0; i < V.size(); i++) { // O(n)
 		
 		if (p(V[i])) {
 			vRes[size] = V[i];
@@ -191,7 +191,7 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 	}
 
 	
-	for (int i = 0; i < V.size(); i++) {
+	for (int i = 0; i < V.size(); i++) { // O(n)
 
 		if (!p(V[i])) {
 			vRes[size] = V[i];
@@ -200,7 +200,7 @@ void TND004::stable_partition_iterative(std::vector<int>& V, Test p)
 	}
 	
 
-	V.assign(vRes.begin(), vRes.end());
+	V.assign(vRes.begin(), vRes.end()); // O(n)
 }
 
 
@@ -212,8 +212,6 @@ namespace TND004
 	//If there are no items with property p then return first
 	std::vector<int>::iterator stable_partition(std::vector<int>& V, std::vector<int>::iterator first, std::vector<int>::iterator last, Test p)
 	{
-		//ADD IMPLEMENTATION
-		
 
 		if (first == last-1) {
 			if (p(*first)) return first+1;
@@ -226,8 +224,6 @@ namespace TND004
 		std::vector<int>::iterator it3 = TND004::stable_partition(V, mid, last, p);
 
 		return std::rotate(it1, mid, it3);
-
-        //return std::begin(V); //this is dummy code that should be removed
 	}
 }
 
