@@ -228,12 +228,21 @@ private:
 	//Add here declaration of any private auxiliary member functions, if needed
 
 	//Empty Set
-	void initSet() {
+	void createSet() {
 		head = new Node();
 		tail = new Node();
 
 		head->next = tail;
 		tail->prev = head;
+	}
+
+	void insert(Node* p, int n) {
+		Node* newNode = new Node(n, tail, tail->prev);
+
+		tail->prev = tail->prev->next = newNode;
+
+		//count size
+		counter++;
 	}
 
 	void erase(Node* p) {

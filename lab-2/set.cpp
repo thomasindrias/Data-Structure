@@ -9,7 +9,7 @@ Set::Set ()
 	: counter{ 0 }
 {
 	//IMPLEMENT before HA session on week 15
-	Set::initSet();
+	Set::createSet();
 }
 
 
@@ -20,12 +20,7 @@ Set::Set (int n)
 	//IMPLEMENT before HA session on week 15
 
 	//Add newNode 
-	Node* newNode = new Node(n, tail, tail->prev);
-
-	tail->prev = tail->prev->next = newNode;
-
-	//count size
-	counter++;
+	Set::insert(tail, n);
 }
 
 
@@ -36,12 +31,7 @@ Set::Set (int a[], int n) // a is sorted
 	for (int i = 0; i < n; i++) {
 
 		//Add newNode 
-		Node* newNode = new Node(a[i], tail, tail->prev);
-
-		tail->prev = tail->prev->next = newNode;
-
-		//count size
-		counter++;
+		Set::insert(tail, a[i]);
 	}
 }
 
@@ -83,7 +73,7 @@ Set::Set (const Set& source)
 {
 	//IMPLEMENT before HA session on week 15
 	
-	initSet();
+	Set::createSet();
 
 	Node* p = source.head->next;
 
@@ -105,6 +95,12 @@ Set& Set::operator=(Set source)
 {
 	//IMPLEMENT before HA session on week 15
 
+	Set newSet(source);
+
+	swap(head, newSet.head);
+	swap(tail, newSet.tail);
+	swap(counter, newSet.counter);
+
 	return *this;
 }
 
@@ -120,6 +116,15 @@ bool Set::_empty () const
 bool Set::is_member (int val) const
 {
 	//IMPLEMENT before HA session on week 15
+
+	Node* p = head->next;
+
+	while (p->next) {
+		
+		if (p->value == val) return true;
+
+		p = p->next;
+	}
 
 	return false; //remove this line
 }
@@ -141,6 +146,41 @@ Set& Set::operator+=(const Set& S)
 {
 	//IMPLEMENT before HA session on week 15
 
+	Node* p1 = S.head->next;
+	Node* p2 = head->next;
+
+	Set c;
+
+	//test and insert the union elements of nodes
+	while (p1 != S.tail && p2 != tail) {
+		if (p1->value < p2->value) {
+			c.insert(c.tail, p1->value);
+			p1 = p1->next;
+		}
+		else if (p1->value > p2->value) {
+			c.insert(c.tail, p2->value);
+			p2 = p2->next;
+		}
+		else if (p1->value == p2->value) {
+			c.insert(c.tail, p1->value);
+			p1 = p1->next;
+			p2 = p2->next;
+		}
+	}
+
+	//if p1 or p2 has remaining elements of nodes, insert to set
+	while (p1 != nullptr && p1 != S.tail) {
+		c.insert(c.tail, p1->value);
+		p1 = p1->next;
+	}
+
+	while (p2 != nullptr && p2 != tail) {
+		c.insert(c.tail, p2->value);
+		p2 = p2->next;
+	}
+
+	*this = c;
+
 	return *this;
 }
 
@@ -149,6 +189,21 @@ Set& Set::operator+=(const Set& S)
 Set& Set::operator*=(const Set& S)
 {
 	//IMPLEMENT
+	Set c;
+
+	Node* p1 = S.head;
+	Node* p2 = c.head;
+
+	//loop through the nodes in set b and see if a node value is a member
+	while (p1 != nullptr) {
+		if (is_member(p1->value)) {
+			c.insert(c.tail, p1->value);
+			p2 = p2->next;
+		}
+		p1 = p1->next;
+	}
+
+	*this = c;
 
 	return *this;
 }
