@@ -52,6 +52,7 @@ int main()
 	* TEST PHASE 3                                       *
 	* Assignment operator: operator=                     *
 	******************************************************/
+
 	cout << "\nTEST PHASE 3: operator=\n\n";
 
 	S1 = S2 = S5;
@@ -184,5 +185,6 @@ int main()
 
 	cout << "Ending ...." << endl;
 
-	return 0;
+	return system("pause");
+
 }

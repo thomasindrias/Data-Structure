@@ -9,6 +9,7 @@ Set::Set ()
 	: counter{ 0 }
 {
 	//IMPLEMENT before HA session on week 15
+	Set::initSet();
 }
 
 
@@ -17,6 +18,14 @@ Set::Set (int n)
 	: Set()
 {
 	//IMPLEMENT before HA session on week 15
+
+	//Add newNode 
+	Node* newNode = new Node(n, tail, tail->prev);
+
+	tail->prev = tail->prev->next = newNode;
+
+	//count size
+	counter++;
 }
 
 
@@ -24,7 +33,16 @@ Set::Set (int n)
 Set::Set (int a[], int n) // a is sorted
 	: Set()
 {
-	//IMPLEMENT before HA session on week 15
+	for (int i = 0; i < n; i++) {
+
+		//Add newNode 
+		Node* newNode = new Node(a[i], tail, tail->prev);
+
+		tail->prev = tail->prev->next = newNode;
+
+		//count size
+		counter++;
+	}
 }
 
 
@@ -32,6 +50,16 @@ Set::Set (int a[], int n) // a is sorted
 void Set::make_empty()
 {
 	//IMPLEMENT before HA session on week 15
+
+	Node* p = head->next;
+
+	while (p->next) {
+		
+		//exclude current p from Set
+		p = p->next;
+		
+		Set::erase(p->prev);
+	}
 }
 
 
@@ -39,6 +67,12 @@ Set::~Set()
 {
 	//Member function make_empty() can be used to implement the desctructor
 	//IMPLEMENT before HA session on week 15
+
+	//Remove all Nodes
+	Set::make_empty();
+
+	//Remove Head and Tail	
+	delete head, tail;
 
 }
 
@@ -48,6 +82,20 @@ Set::Set (const Set& source)
 	: counter{ source.counter }
 {
 	//IMPLEMENT before HA session on week 15
+	
+	initSet();
+
+	Node* p = source.head->next;
+
+	while (p->next) {
+
+		//Add newNode 
+		Node* newNode = new Node(p->value, tail, tail->prev);
+
+		tail->prev = tail->prev->next = newNode;
+
+		p = p->next;
+	}
 }
 
 

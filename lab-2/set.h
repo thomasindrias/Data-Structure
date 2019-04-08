@@ -227,6 +227,21 @@ private:
 
 	//Add here declaration of any private auxiliary member functions, if needed
 
+	//Empty Set
+	void initSet() {
+		head = new Node();
+		tail = new Node();
+
+		head->next = tail;
+		tail->prev = head;
+	}
+
+	void erase(Node* p) {
+		p->prev->next = p->next;
+		delete p;
+		counter--;
+	}
+
 
 	/* **************************** *
 	* Overloaded Global Operators   *
