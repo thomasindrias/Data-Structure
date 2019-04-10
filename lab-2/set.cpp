@@ -44,11 +44,16 @@ void Set::make_empty()
 	Node* p = head->next;
 
 	while (p->next) {
+
+		Node* pNext = p->next;
+
+		p->prev->next = p->next;
+		p->next->prev = p->prev;
 		
-		//exclude current p from Set
-		p = p->next;
-		
-		Set::erase(p->prev);
+		delete p;
+
+		p = pNext;
+		counter--;
 	}
 }
 
@@ -61,8 +66,11 @@ Set::~Set()
 	//Remove all Nodes
 	Set::make_empty();
 
+	// cout << "failed to remove: " << this->counter << endl;
+
 	//Remove Head and Tail	
-	delete head, tail;
+	delete head;
+	delete tail;
 
 }
 
@@ -191,16 +199,21 @@ Set& Set::operator*=(const Set& S)
 	//IMPLEMENT
 	Set c;
 
-	Node* p1 = S.head;
-	Node* p2 = c.head;
+	Node* p = head->next;
+	Node* ps = S.head->next;
 
-	//loop through the nodes in set b and see if a node value is a member
-	while (p1 != nullptr) {
-		if (is_member(p1->value)) {
-			c.insert(c.tail, p1->value);
-			p2 = p2->next;
+	while (p != tail && ps != S.tail) {
+		if (p->value > ps->value) {
+			ps = ps->next;
 		}
-		p1 = p1->next;
+		else if (p->value < ps->value) {
+			p = p->next;
+		}
+		else {
+			c.insert(c.tail, p->value);
+			p = p->next;
+			ps = ps->next;
+		}
 	}
 
 	*this = c;
@@ -212,7 +225,30 @@ Set& Set::operator*=(const Set& S)
 //Modify Set *this such that it becomes the Set difference between *this and Set S
 Set& Set::operator-=(const Set& S)
 {
-	//IMPLEMENT
+	Set t(*this);
+
+	Node* pt = t.head->next;
+	Node* pb = S.head->next;
+
+	while (pt != t.tail && pb != S.tail) {
+		if (pt->value > pb->value) {
+			pb = pb->next;
+		}
+		else if (pt->value < pb->value) {
+			pt = pt->next;
+		}
+		else {
+			pt->prev->next = pt->next;
+
+			pt = pt->next;
+			pb = pb->next;
+			// skip this node in t
+			t.counter--;
+			
+		}
+	}
+
+	*this = std::move(t);
 
 	return *this;
 }
@@ -223,7 +259,7 @@ bool Set::operator<=(const Set& b) const
 {
 	//IMPLEMENT
 
-	return false; //remove this line
+	return (*this * b).counter == counter;
 }
 
 
@@ -233,7 +269,7 @@ bool Set::operator==(const Set& b) const
 {
 	//IMPLEMENT
 
-	return false; //remove this line
+	return (*this <= b && b <= *this);
 }
 
 
@@ -243,7 +279,7 @@ bool Set::operator!=(const Set& b) const
 {
 	//IMPLEMENT
 
-	return false; //remove this line
+	return !(*this <= b && b <= *this);
 }
 
 
@@ -253,7 +289,7 @@ bool Set::operator<(const Set& b) const
 {
 	//IMPLEMENT
 
-	return false; //remove this line
+	return *this <= b && !(b <= *this);
 }
 
 

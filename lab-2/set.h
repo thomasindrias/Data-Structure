@@ -246,7 +246,12 @@ private:
 	}
 
 	void erase(Node* p) {
+		//p->prev->next = p->next;
+		//delete p;
+		//counter--;
+
 		p->prev->next = p->next;
+		p->next->prev = p->prev;
 		delete p;
 		counter--;
 	}
