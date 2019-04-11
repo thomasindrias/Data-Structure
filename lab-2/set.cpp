@@ -8,7 +8,6 @@
 Set::Set ()
 	: counter{ 0 }
 {
-	//IMPLEMENT before HA session on week 15
 	Set::createSet();
 }
 
@@ -17,10 +16,8 @@ Set::Set ()
 Set::Set (int n)
 	: Set()
 {
-	//IMPLEMENT before HA session on week 15
-
 	//Add newNode 
-	Set::insert(tail, n);
+	this->insert(tail, n);
 }
 
 
@@ -39,21 +36,19 @@ Set::Set (int a[], int n) // a is sorted
 //Make the set empty
 void Set::make_empty()
 {
-	//IMPLEMENT before HA session on week 15
-
 	Node* p = head->next;
+	Node* temp;
 
-	while (p->next) {
 
-		Node* pNext = p->next;
-
+	while (p != nullptr && p != tail) {
+		
+		//exclude current p from Set
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
-		
+		temp = p->next;
 		delete p;
-
-		p = pNext;
 		counter--;
+		p = temp;
 	}
 }
 
@@ -61,7 +56,6 @@ void Set::make_empty()
 Set::~Set()
 {
 	//Member function make_empty() can be used to implement the desctructor
-	//IMPLEMENT before HA session on week 15
 
 	//Remove all Nodes
 	Set::make_empty();
@@ -71,16 +65,13 @@ Set::~Set()
 	//Remove Head and Tail	
 	delete head;
 	delete tail;
-
 }
 
 
 //Copy constructor
 Set::Set (const Set& source)
 	: counter{ source.counter }
-{
-	//IMPLEMENT before HA session on week 15
-	
+{	
 	Set::createSet();
 
 	Node* p = source.head->next;
@@ -101,8 +92,6 @@ Set::Set (const Set& source)
 //Note that call-by-value is used for source parameter
 Set& Set::operator=(Set source)
 {
-	//IMPLEMENT before HA session on week 15
-
 	Set newSet(source);
 
 	swap(head, newSet.head);
@@ -123,7 +112,6 @@ bool Set::_empty () const
 //Test set membership
 bool Set::is_member (int val) const
 {
-	//IMPLEMENT before HA session on week 15
 
 	Node* p = head->next;
 
@@ -134,7 +122,7 @@ bool Set::is_member (int val) const
 		p = p->next;
 	}
 
-	return false; //remove this line
+	return false; 
 }
 
 
@@ -250,9 +238,17 @@ Set& Set::operator-=(const Set& S)
 //a <= b iff every member of a is a member of b
 bool Set::operator<=(const Set& b) const
 {
-	//IMPLEMENT
+	//Node* p1 = b.head->next;
+	Node* p2 = head->next;
 
-	return (*this * b).counter == counter;
+	while (p2 != nullptr && p2 != tail) {
+		if (!b.is_member(p2->value)) {
+			return false;
+		}
+		p2 = p2->next;
+	}
+	
+	return true;
 }
 
 
@@ -260,9 +256,19 @@ bool Set::operator<=(const Set& b) const
 //a == b, iff a <= b and b <= a
 bool Set::operator==(const Set& b) const
 {
-	//IMPLEMENT
-
-	return (*this <= b && b <= *this);
+	Node* p1 = b.head->next;
+	Node* p2 = head->next;
+	if (b.counter != counter) {
+		return false;
+	}
+	while (p1 != b.tail && p2 != tail) {
+		if (p1->value != p2->value) {
+			return false;
+		}
+		p1 = p1->next;
+		p2 = p2->next;
+	}
+	return true;
 }
 
 
@@ -270,9 +276,11 @@ bool Set::operator==(const Set& b) const
 //a == b, iff a <= b and b <= a
 bool Set::operator!=(const Set& b) const
 {
-	//IMPLEMENT
+	if (this->operator==(b)) {
+		return false;
+	}
+	return true; 
 
-	return !(*this <= b && b <= *this);
 }
 
 
@@ -280,9 +288,10 @@ bool Set::operator!=(const Set& b) const
 //a == b, iff a <= b but not b <= a
 bool Set::operator<(const Set& b) const
 {
-	//IMPLEMENT
-
-	return *this <= b && !(b <= *this);
+	if (this->operator<=(b)){
+		return true;
+	}
+	return false; 
 }
 
 
@@ -292,7 +301,7 @@ ostream& operator<<(ostream& os, const Set& b)
 	if (b._empty())
 	{
 		os << "Set is empty!" << endl;
-	}	
+	}
 	else
 	{
 		auto temp = b.head->next;

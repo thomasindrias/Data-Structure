@@ -241,7 +241,7 @@ private:
 
 		p->prev = p->prev->next = newNode;
 
-		//count size
+		//count size  
 		counter++;
 	}
 
@@ -255,7 +255,6 @@ private:
 		delete p;
 		counter--;
 	}
-
 
 	/* **************************** *
 	* Overloaded Global Operators   *
