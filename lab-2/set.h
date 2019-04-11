@@ -244,9 +244,6 @@ private:
 		//count size  
 		counter++;
 	}
-<<<<<<< HEAD
-	
-=======
 
 	void erase(Node* p) {
 		//p->prev->next = p->next;
@@ -259,8 +256,6 @@ private:
 		counter--;
 	}
 
-
->>>>>>> 4c9a1a4257f8141229704aa8fcdee4c2aa59aeb9
 	/* **************************** *
 	* Overloaded Global Operators   *
 	* ***************************** */
