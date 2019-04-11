@@ -115,7 +115,7 @@ int main()
 
 	S1 = (S3 + S4);
 	S2 = S3 * S4;
-	S5 = S3 - S4;
+	S5 = S3 - S4; /////
 
 	cout << "S1 = " << S1 << endl;		//S1 = {1 2 3 4 5}
 	cout << "S2 = " << S2 << endl;		//S2 = {3}
@@ -187,6 +187,6 @@ int main()
 
 	return system("pause");
 
-	// return 0;
+	//return 0;
 
 }

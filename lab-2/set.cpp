@@ -39,6 +39,7 @@ void Set::make_empty()
 	Node* p = head->next;
 	Node* temp;
 
+
 	while (p != nullptr && p != tail) {
 		
 		//exclude current p from Set
@@ -58,6 +59,8 @@ Set::~Set()
 
 	//Remove all Nodes
 	Set::make_empty();
+
+	// cout << "failed to remove: " << this->counter << endl;
 
 	//Remove Head and Tail	
 	delete head;
@@ -182,16 +185,21 @@ Set& Set::operator*=(const Set& S)
 	//IMPLEMENT
 	Set c;
 
-	Node* p1 = S.head;
-	Node* p2 = c.head;
+	Node* p = head->next;
+	Node* ps = S.head->next;
 
-	//loop through the nodes in set b and see if a node value is a member
-	while (p1 != nullptr) {
-		if (is_member(p1->value)) {
-			c.insert(c.tail, p1->value);
-			p2 = p2->next;
+	while (p != tail && ps != S.tail) {
+		if (p->value > ps->value) {
+			ps = ps->next;
 		}
-		p1 = p1->next;
+		else if (p->value < ps->value) {
+			p = p->next;
+		}
+		else {
+			c.insert(c.tail, p->value);
+			p = p->next;
+			ps = ps->next;
+		}
 	}
 
 	*this = c;
@@ -284,6 +292,7 @@ bool Set::operator!=(const Set& b) const
 		return false;
 	}
 	return true; 
+
 }
 
 
@@ -304,7 +313,7 @@ ostream& operator<<(ostream& os, const Set& b)
 	if (b._empty())
 	{
 		os << "Set is empty!" << endl;
-	}	
+	}
 	else
 	{
 		auto temp = b.head->next;
