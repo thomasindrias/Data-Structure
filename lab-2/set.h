@@ -241,17 +241,10 @@ private:
 
 		tail->prev = tail->prev->next = newNode;
 
-		//count size
+		//count size  
 		counter++;
 	}
-
-	void erase(Node* p) {
-		p->prev->next = p->next;
-		delete p;
-		counter--;
-	}
-
-
+	
 	/* **************************** *
 	* Overloaded Global Operators   *
 	* ***************************** */
