@@ -154,40 +154,32 @@ Set& Set::operator+=(const Set& S)
 {
 	//IMPLEMENT before HA session on week 15
 
-	Node* p1 = S.head->next;
-	Node* p2 = head->next;
+	Node* pa = head->next;
+	Node* pb = S.head->next;
 
-	Set c;
+	//cout << "pa: " << *this << "   pb: " << S << endl;
 
 	//test and insert the union elements of nodes
-	while (p1 != S.tail && p2 != tail) {
-		if (p1->value < p2->value) {
-			c.insert(c.tail, p1->value);
-			p1 = p1->next;
+	while (pb != S.tail && pa != tail) {
+		if (pb->value < pa->value) {
+			insert(pa, pb->value);
+			pb = pb->next;
 		}
-		else if (p1->value > p2->value) {
-			c.insert(c.tail, p2->value);
-			p2 = p2->next;
+		else if (pb->value > pa->value) {
+			pa = pa->next;
 		}
-		else if (p1->value == p2->value) {
-			c.insert(c.tail, p1->value);
-			p1 = p1->next;
-			p2 = p2->next;
+		else if (pb->value == pa->value) {
+			pb = pb->next;
+			pa = pa->next;
 		}
 	}
 
-	//if p1 or p2 has remaining elements of nodes, insert to set
-	while (p1 != nullptr && p1 != S.tail) {
-		c.insert(c.tail, p1->value);
-		p1 = p1->next;
-	}
+	//if pb or pa has remaining elements of nodes, insert to set
 
-	while (p2 != nullptr && p2 != tail) {
-		c.insert(c.tail, p2->value);
-		p2 = p2->next;
+	while (pb && pb != S.tail) {
+		insert(pa, pb->value);
+		pb = pb->next;
 	}
-
-	*this = c;
 
 	return *this;
 }
@@ -197,10 +189,44 @@ Set& Set::operator+=(const Set& S)
 Set& Set::operator*=(const Set& S)
 {
 	//IMPLEMENT
-	Set c;
 
 	Node* p = head->next;
 	Node* ps = S.head->next;
+
+	// cout << "this: " << *this << "   S: " << S << endl;
+
+	while (p != tail && ps != S.tail) {
+		if (p->value > ps->value) {
+			ps = ps->next;
+		}
+		else if (p->value < ps->value) {
+			p = p->next;
+			Set::erase(p->prev);
+		}
+		else {
+			p = p->next;
+			ps = ps->next;
+		}
+	}
+
+	while (ps == S.tail && p != tail) {
+		p = p->next;
+		Set::erase(p->prev);
+
+		
+	}
+
+	return *this;
+}
+
+
+//Modify Set *this such that it becomes the Set difference between *this and Set S
+Set& Set::operator-=(const Set& S)
+{
+	Node* p = head->next;
+	Node* ps = S.head->next;
+
+	// cout << "this: " << *this << "   S: " << S << endl;
 
 	while (p != tail && ps != S.tail) {
 		if (p->value > ps->value) {
@@ -210,45 +236,12 @@ Set& Set::operator*=(const Set& S)
 			p = p->next;
 		}
 		else {
-			c.insert(c.tail, p->value);
 			p = p->next;
 			ps = ps->next;
+
+			Set::erase(p->prev);
 		}
 	}
-
-	*this = c;
-
-	return *this;
-}
-
-
-//Modify Set *this such that it becomes the Set difference between *this and Set S
-Set& Set::operator-=(const Set& S)
-{
-	Set t(*this);
-
-	Node* pt = t.head->next;
-	Node* pb = S.head->next;
-
-	while (pt != t.tail && pb != S.tail) {
-		if (pt->value > pb->value) {
-			pb = pb->next;
-		}
-		else if (pt->value < pb->value) {
-			pt = pt->next;
-		}
-		else {
-			pt->prev->next = pt->next;
-
-			pt = pt->next;
-			pb = pb->next;
-			// skip this node in t
-			t.counter--;
-			
-		}
-	}
-
-	*this = std::move(t);
 
 	return *this;
 }
