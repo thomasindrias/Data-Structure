@@ -236,25 +236,24 @@ private:
 		tail->prev = head;
 	}
 
+	//Inserts node at p
 	void insert(Node* p, int n) {
 		Node* newNode = new Node(n, p, p->prev);
 
 		p->prev = p->prev->next = newNode;
 
-		//count size  
+		//count size
 		counter++;
 	}
 
+	//erases the node at Node p
 	void erase(Node* p) {
-		//p->prev->next = p->next;
-		//delete p;
-		//counter--;
-
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
 		delete p;
 		counter--;
 	}
+
 
 	/* **************************** *
 	* Overloaded Global Operators   *
