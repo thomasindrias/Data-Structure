@@ -86,6 +86,8 @@ public:
 	 //IMPLEMENT before HA session on week 15
 	Set (const Set& b);
 
+	Set(Set && source);
+
 
 	/** Transform the Set into an empty se
 	*

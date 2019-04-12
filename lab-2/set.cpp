@@ -87,6 +87,29 @@ Set::Set (const Set& source)
 	}
 }
 
+Set::Set(Set&& source)
+	: counter{ source.counter }
+{	
+	Set:createSet();
+	swap(head, source.head);
+	swap(tail, source.tail);
+	swap(counter, source.counter);
+
+	/*
+	Node *temp = source.head->next;
+	Set::createSet();
+	source.head->next->prev = head;
+	head->next->prev = source.head;
+	source.head->next = head->next;
+	head->next =  temp;
+
+	source.tail->prev->next = tail;
+	tail->prev->next = source.tail;
+	temp = source.tail->prev;
+	source.tail->prev = tail->prev;
+	tail->prev = temp;
+	source.counter = 0;*/
+}
 
 //Copy-and-swap assignment operator
 //Note that call-by-value is used for source parameter
@@ -100,6 +123,7 @@ Set& Set::operator=(Set source)
 
 	return *this;
 }
+
 
 
 //Test whether a set is empty
