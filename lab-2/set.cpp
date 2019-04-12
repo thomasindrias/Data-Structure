@@ -5,7 +5,7 @@
 ******************************************************/
 
 //Default constructor
-Set::Set ()
+Set::Set()
 	: counter{ 0 }
 {
 	Set::createSet();
@@ -13,16 +13,16 @@ Set::Set ()
 
 
 //Conversion constructor
-Set::Set (int n)
+Set::Set(int n)
 	: Set()
 {
 	//Add newNode 
-	this->insert(tail, n);
+	Set::insert(tail, n);
 }
 
 
 //Constructor to create a Set from a SORTED array
-Set::Set (int a[], int n) // a is sorted
+Set::Set(int a[], int n) // a is sorted
 	: Set()
 {
 	for (int i = 0; i < n; i++) {
@@ -37,41 +37,37 @@ Set::Set (int a[], int n) // a is sorted
 void Set::make_empty()
 {
 	Node* p = head->next;
-	Node* temp;
 
+	while (p->next) {
 
-	while (p != nullptr && p != tail) {
-		
-		//exclude current p from Set
+		Node* pNext = p->next;
+
 		p->prev->next = p->next;
 		p->next->prev = p->prev;
-		temp = p->next;
+
 		delete p;
+		p = pNext;
 		counter--;
-		p = temp;
 	}
 }
 
 
 Set::~Set()
 {
-	//Member function make_empty() can be used to implement the desctructor
-
 	//Remove all Nodes
 	Set::make_empty();
-
-	// cout << "failed to remove: " << this->counter << endl;
 
 	//Remove Head and Tail	
 	delete head;
 	delete tail;
+
 }
 
 
 //Copy constructor
-Set::Set (const Set& source)
+Set::Set(const Set& source)
 	: counter{ source.counter }
-{	
+{
 	Set::createSet();
 
 	Node* p = source.head->next;
@@ -127,26 +123,25 @@ Set& Set::operator=(Set source)
 
 
 //Test whether a set is empty
-bool Set::_empty () const
+bool Set::_empty() const
 {
 	return (!counter);
 }
 
 
 //Test set membership
-bool Set::is_member (int val) const
+bool Set::is_member(int val) const
 {
-
 	Node* p = head->next;
 
 	while (p->next) {
-		
+
 		if (p->value == val) return true;
 
 		p = p->next;
 	}
 
-	return false; 
+	return false; //remove this line
 }
 
 
@@ -164,40 +159,30 @@ unsigned Set::cardinality() const
 //Algorithm used in exercise 5, of lesson 1 in TNG033 is useful to implement this function
 Set& Set::operator+=(const Set& S)
 {
-	Node* p1 = S.head->next;
-	Node* p2 = head->next;
-
-	Set c;
+	Node* pa = head->next;
+	Node* pb = S.head->next;
 
 	//test and insert the union elements of nodes
-	while (p1 != S.tail && p2 != tail) {
-		if (p1->value < p2->value) {
-			c.insert(c.tail, p1->value);
-			p1 = p1->next;
+	while (pb != S.tail && pa != tail) {
+		if (pb->value < pa->value) {
+			insert(pa, pb->value);
+			pb = pb->next;
 		}
-		else if (p1->value > p2->value) {
-			c.insert(c.tail, p2->value);
-			p2 = p2->next;
+		else if (pb->value > pa->value) {
+			pa = pa->next;
 		}
-		else if (p1->value == p2->value) {
-			c.insert(c.tail, p1->value);
-			p1 = p1->next;
-			p2 = p2->next;
+		else if (pb->value == pa->value) {
+			pb = pb->next;
+			pa = pa->next;
 		}
 	}
 
-	//if p1 or p2 has remaining elements of nodes, insert to set
-	while (p1 != nullptr && p1 != S.tail) {
-		c.insert(c.tail, p1->value);
-		p1 = p1->next;
+	//if pb has remaining elements of nodes, insert to set
+	while (pb && pb != S.tail) {
+		insert(pa, pb->value);
+		pb = pb->next;
 	}
 
-	while (p2 != nullptr && p2 != tail) {
-		c.insert(c.tail, p2->value);
-		p2 = p2->next;
-	}
-
-	*this = c;
 
 	return *this;
 }
@@ -206,9 +191,37 @@ Set& Set::operator+=(const Set& S)
 //Modify Set *this such that it becomes the intersection of *this with Set S
 Set& Set::operator*=(const Set& S)
 {
-	//IMPLEMENT
-	Set c;
+	Node* p = head->next;
+	Node* ps = S.head->next;
 
+	while (p != tail && ps != S.tail) {
+		if (p->value > ps->value) {
+			ps = ps->next;
+		}
+		else if (p->value < ps->value) {
+			p = p->next;
+			Set::erase(p->prev);
+		}
+		else {
+			p = p->next;
+			ps = ps->next;
+		}
+	}
+
+	while (ps == S.tail && p != tail) {
+		p = p->next;
+		Set::erase(p->prev);
+
+
+	}
+
+	return *this;
+}
+
+
+//Modify Set *this such that it becomes the Set difference between *this and Set S
+Set& Set::operator-=(const Set& S)
+{
 	Node* p = head->next;
 	Node* ps = S.head->next;
 
@@ -220,53 +233,13 @@ Set& Set::operator*=(const Set& S)
 			p = p->next;
 		}
 		else {
-			c.insert(c.tail, p->value);
 			p = p->next;
 			ps = ps->next;
+
+			Set::erase(p->prev);
 		}
 	}
 
-	*this = c;
-
-	return *this;
-}
-
-
-//Modify Set *this such that it becomes the Set difference between *this and Set S
-Set& Set::operator-=(const Set& S)
-{
-	Node* p1 = S.head->next;
-	Node* p2 = head->next;
-
-	Set c;
-	while (p1 != S.tail && p2 != tail) {
-		if (p1->value == p2->value) {
-			//c.insert(c.tail, p1->value);
-			p1 = p1->next;
-			p2 = p2->next;
-		}
-		else if (p1->value > p2->value) {
-			c.insert(c.tail, p2->value);
-			p2 = p2->next;
-		}
-		else if (p1->value < p2->value) {
-			//c.insert(c.tail, p1->value);
-			p1 = p1->next;
-		}
-	}
-
-	//if p1 or p2 has remaining elements of nodes, insert to set
-	/*while (p1 != nullptr && p1 != S.tail) {
-		c.insert(c.tail, p1->value);
-		p1 = p1->next;
-	}*/
-
-	while (p2 != nullptr && p2 != tail) {
-		c.insert(c.tail, p2->value);
-		p2 = p2->next;
-	}
-
-	*this = c;
 	return *this;
 }
 
@@ -274,17 +247,7 @@ Set& Set::operator-=(const Set& S)
 //a <= b iff every member of a is a member of b
 bool Set::operator<=(const Set& b) const
 {
-	//Node* p1 = b.head->next;
-	Node* p2 = head->next;
-
-	while (p2 != nullptr && p2 != tail) {
-		if (!b.is_member(p2->value)) {
-			return false;
-		}
-		p2 = p2->next;
-	}
-	
-	return true;
+	return (*this * b).counter == counter;
 }
 
 
@@ -292,19 +255,7 @@ bool Set::operator<=(const Set& b) const
 //a == b, iff a <= b and b <= a
 bool Set::operator==(const Set& b) const
 {
-	Node* p1 = b.head->next;
-	Node* p2 = head->next;
-	if (b.counter != counter) {
-		return false;
-	}
-	while (p1 != b.tail && p2 != tail) {
-		if (p1->value != p2->value) {
-			return false;
-		}
-		p1 = p1->next;
-		p2 = p2->next;
-	}
-	return true;
+	return (*this <= b && b <= *this);
 }
 
 
@@ -312,11 +263,7 @@ bool Set::operator==(const Set& b) const
 //a == b, iff a <= b and b <= a
 bool Set::operator!=(const Set& b) const
 {
-	if (this->operator==(b)) {
-		return false;
-	}
-	return true; 
-
+	return !(*this <= b && b <= *this);
 }
 
 
@@ -324,10 +271,9 @@ bool Set::operator!=(const Set& b) const
 //a == b, iff a <= b but not b <= a
 bool Set::operator<(const Set& b) const
 {
-	if (this->operator<=(b)){
-		return true;
-	}
-	return false; 
+	//IMPLEMENT
+
+	return *this <= b && !(b <= *this);
 }
 
 
@@ -354,5 +300,3 @@ ostream& operator<<(ostream& os, const Set& b)
 
 	return os;
 }
-
-
