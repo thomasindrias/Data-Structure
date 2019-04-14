@@ -164,7 +164,7 @@ int main()
 	cout << "S5 = " << S5 << endl;
 	
 	//Copy constructor && -> * -> *= -> <<
-	//cout << "std::move(*ptr_S) * S5 = " << std::move(*ptr_S) * S5 << endl; // = { 3 4 24 }
+	cout << "std::move(*ptr_S) * S5 = " << std::move(*ptr_S) * S5 << endl; // = { 3 4 24 }
 	
 	//Copy costructor -> friend* -> *= -> <<
 	cout << "S5 * std::move(*ptr_S) = " << S5 * std::move(*ptr_S) << endl;
