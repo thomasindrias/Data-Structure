@@ -57,6 +57,9 @@ int main()
 
 	S1 = S2 = S5;
 
+	cout << "S6 (TESTING) = " << 1 + S2 << endl;		//S2 = {1 3 5}
+
+
 	cout << "S1 = " << S1 << endl;		//S1 = {1 3 5}
 	cout << "S2 = " << S2 << endl;		//S2 = {1 3 5}
 
