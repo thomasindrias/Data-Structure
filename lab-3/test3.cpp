@@ -2,6 +2,7 @@
 //#include <vector>
 //#include <iterator>
 //#include <fstream>
+//#include <string>
 //
 //#include "BinarySearchTree.h"
 //
@@ -13,7 +14,7 @@
 //int main( )
 //{
 //    BinarySearchTree<string> T;
-//    ifstream file("words.txt");
+//    ifstream file("C:/Users/user/source/repos/Project1/words.txt");
 //
 //    if (!file)
 //    {
@@ -36,7 +37,7 @@
 //    for(auto w: V2)
 //    {
 //        if( T.contains( w ) != T.end() ) //NOTE: contains should now return a bidirectional iterator
-//            cout << "\""<< w << "\"" << " in the tree" << endl;
+//            cout << "\"" << w << "\"" << " in the tree" << endl;
 //        else
 //            cout << "\""<< w << "\"" << " not in the tree" << endl;
 //    }

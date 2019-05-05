@@ -27,10 +27,68 @@ using namespace std;
 template <typename Comparable>
 class BinarySearchTree
 {
+	struct BinaryNode;
+	
   public:
-    BinarySearchTree( ) : root{ nullptr }
-    {
-    }
+	  /**
+	  * Class BiIterator
+      */
+
+	  class BiIterator
+	  {
+	  public:
+		  BiIterator( BinaryNode *b = nullptr) : current { b } { };
+		  Comparable& operator*() const
+		  {
+			  return current->element;
+		  }
+		  Comparable* operator->() const {
+			  return &current->element;
+		  }
+		  bool operator==(const BiIterator &it) const {
+			  return current == it.current;
+		  }
+		  bool operator!=(const BiIterator &it) const {
+			  return current != it.current;
+		  }
+		  BiIterator& operator++() //pre-increment
+		  {
+			  current = parent->find_successor(current);
+			  return *this; 
+		  }
+		  BiIterator operator++(int a) //post-increment
+		  {
+			  //TODO
+		  }
+		  BiIterator& operator--() //pre-decrement 
+		  {
+			  current = parent->find_predecessor(current);
+			  return *this; 
+		  }
+		  BiIterator operator--(int a) //post-decrement
+		  {
+			  
+			  //TODO
+		  }
+	  private:
+		  BinaryNode *current;
+		  BinarySearchTree* parent;		 
+	  };
+
+	BiIterator begin() const
+	{
+		if (isEmpty()) return end();
+		return BiIterator(findMin(root));
+	}
+	BiIterator end() const
+	{
+		return BiIterator(nullptr);
+	}
+
+
+	BinarySearchTree() : root{ nullptr }
+	{
+	}
 
     /**
      * Copy constructor
@@ -97,9 +155,9 @@ class BinarySearchTree
     /**
      * Returns true if x is found in the tree.
      */
-    bool contains( const Comparable & x ) const
+    BiIterator contains( const Comparable & x ) const
     {
-        return ( contains( x, root ) != nullptr );
+        return BiIterator(contains( x, root ));
     }
 
     /**
@@ -158,7 +216,9 @@ class BinarySearchTree
     {
         root = remove( x, root );
     }
-
+	/**
+	 * Get x parent from the tree. Nothing is done if x is not found.
+	 */
 	Comparable get_parent(Comparable x) const
 	{
 		BinaryNode* investigator = root;
@@ -180,7 +240,9 @@ class BinarySearchTree
 
 		return Comparable();
 	}
-
+	/**
+	 * Find predcusser and succusser for x from the tree. 
+	 */
 	void find_pred_succ(const Comparable& x, Comparable& pred, Comparable& succ) const
 	{
 		BinaryNode* current = root;
@@ -211,7 +273,7 @@ class BinarySearchTree
 				current = current->left;
 			}
 		}
-	}
+	}	
 
 
   private:
@@ -494,7 +556,7 @@ class BinarySearchTree
         }
     }
 
-	BinaryNode * find_successor(BinaryNode *t) 
+	BinaryNode * find_successor(BinaryNode *t)  const
 	{
 		if (t == nullptr)
 			return nullptr;
@@ -512,7 +574,7 @@ class BinarySearchTree
 		return t->parent;
 	}
 
-	BinaryNode * find_predecessor(BinaryNode *t) 
+	BinaryNode*  find_predecessor(BinaryNode *t) const
 	{
 		if (t == nullptr)
 			return nullptr;
