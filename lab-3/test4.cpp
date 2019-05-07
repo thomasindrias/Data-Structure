@@ -21,12 +21,13 @@ public:
 		}
 			
 	};
+	
 	void insert(string keyWord) {
 		//Check that the word dont exist
 		//if it dose increment the counter
 		//else add it to de tree.
 		if (tree.contains(keyWord) != nullptr) tree.contains(keyWord)->increment();
-		else tree.insert(*(new FrequencyRow(keyWord)));
+		else tree.insert(FrequencyRow(keyWord));
 	};
 
 private:
@@ -34,6 +35,7 @@ private:
 	{
 	public:
 		FrequencyRow(string b, int c = 1) : key{ b }, counter{ c } { };
+		
 		//increment the counter
 		void increment() {
 			counter++;
