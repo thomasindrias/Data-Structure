@@ -53,26 +53,29 @@ class BinarySearchTree
 		  }
 		  BiIterator& operator++() //pre-increment
 		  {
-			  current = parent->find_successor(current);
+			  current = find_successor(current);
 			  return *this; 
 		  }
 		  BiIterator operator++(int a) //post-increment
 		  {
-			  //TODO
+			  BiIterator *temp = this;
+			  current = find_successor(current);
+			  return *temp;
 		  }
 		  BiIterator& operator--() //pre-decrement 
 		  {
-			  current = parent->find_predecessor(current);
+			  current = find_predecessor(current);
 			  return *this; 
 		  }
 		  BiIterator operator--(int a) //post-decrement
 		  {
-			  
-			  //TODO
+			  BiIterator *temp = this;
+			  current = find_predecessor(current);
+			  return *temp;
+
 		  }
 	  private:
 		  BinaryNode *current;
-		  BinarySearchTree* parent;		 
 	  };
 
 	BiIterator begin() const
@@ -402,7 +405,7 @@ class BinarySearchTree
      * Private member function to find the smallest item in a subtree t.
      * Return node containing the smallest item.
      */
-    BinaryNode * findMin( BinaryNode *t ) const
+    static BinaryNode * findMin( BinaryNode *t ) 
     {
         if( t == nullptr )
         {
@@ -421,7 +424,7 @@ class BinarySearchTree
      * Private member function to find the largest item in a subtree t.
      * Return node containing the largest item.
      */
-    BinaryNode * findMax( BinaryNode *t ) const
+    static BinaryNode * findMax( BinaryNode *t ) 
     {
         if( t != nullptr )
         {
@@ -556,7 +559,7 @@ class BinarySearchTree
         }
     }
 
-	BinaryNode * find_successor(BinaryNode *t)  const
+	static BinaryNode * find_successor(BinaryNode *t)  
 	{
 		if (t == nullptr)
 			return nullptr;
@@ -574,7 +577,7 @@ class BinarySearchTree
 		return t->parent;
 	}
 
-	BinaryNode*  find_predecessor(BinaryNode *t) const
+	static BinaryNode*  find_predecessor(BinaryNode *t) 
 	{
 		if (t == nullptr)
 			return nullptr;
