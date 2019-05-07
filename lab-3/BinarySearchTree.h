@@ -527,7 +527,7 @@ class BinarySearchTree
 	{
 		if (t != nullptr)
 		{
-			cout << setw(indentation) << t->element << endl;
+			out << setw(indentation) << t->element << endl;
 
 			if (indentation == 0)
 				indentation += 4;
