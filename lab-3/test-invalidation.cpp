@@ -26,8 +26,12 @@ int main( )
     t1.printTree( );
     cout << endl;
 
+	BinarySearchTree<int>::BiIterator it = t1.begin();
 
-	const int val_delete = 10;
+	cout << "ITERATOR OF SMALLEST VALUE IN BINARYSEARCHTREE" << endl;
+	std::cout << "BEFORE NUMBER: " << *it << " WITH ADRESS: " << &it << "\n";
+
+	const int val_delete = 5;
     cout << "remove " << val_delete << endl;
     t1.remove(val_delete);
 
@@ -37,6 +41,9 @@ int main( )
 	cout << "T1 AFTER" << endl;
 	t1.printTree();
 	cout << endl;
+
+	cout << "ITERATOR STILL POINTS TO THE PREVIOUS OLD MEMORY ADRESS" << endl;
+	std::cout << "AFTER NUMBER: " << *it << " WITH ADRESS: " << &it << "\n";
 
     cout << "\nFinished testing" << endl;
 
