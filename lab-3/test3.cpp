@@ -14,7 +14,7 @@
 //int main( )
 //{
 //    BinarySearchTree<string> T;
-//    ifstream file("C:/Users/user/source/repos/Project1/words.txt");
+//    ifstream file("c:/Users/thoma/Desktop/Uni/TND004 - Datastruktur/Data-Structure/lab-3/other files/words.txt");
 //
 //    if (!file)
 //    {
@@ -66,5 +66,6 @@
 //
 //    cout << "\nFinished testing" << endl;
 //
-//    return 0;
+//	  system("pause");
+//	  return 0;
 //}
