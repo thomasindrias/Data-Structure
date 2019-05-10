@@ -26,10 +26,14 @@ int main( )
     t1.printTree( );
     cout << endl;
 
-	BinarySearchTree<int>::BiIterator it = t1.begin();
+	BinarySearchTree<int>::BiIterator it1 = t1.begin();
+	BinarySearchTree<int>::BiIterator it2 = t1.begin()++;
 
-	cout << "ITERATOR OF SMALLEST VALUE IN BINARYSEARCHTREE" << endl;
-	std::cout << "BEFORE NUMBER: " << *it << " WITH ADRESS: " << &it << "\n";
+	cout << "IT1: ITERATOR OF SMALLEST VALUE IN BINARYSEARCHTREE" << endl;
+	std::cout << "BEFORE NUMBER: " << *it1 << " WITH ADRESS: " << &it1 << "\n";
+
+	cout << "IT2: ITERATOR OF SECOND SMALLEST VALUE IN BINARYSEARCHTREE" << endl;
+	std::cout << "BEFORE NUMBER: " << *it2 << " WITH ADRESS: " << &it2 << "\n";
 
 	const int val_delete = 5;
     cout << "remove " << val_delete << endl;
@@ -42,8 +46,11 @@ int main( )
 	t1.printTree();
 	cout << endl;
 
-	cout << "ITERATOR STILL POINTS TO THE PREVIOUS OLD MEMORY ADRESS" << endl;
-	std::cout << "AFTER NUMBER: " << *it << " WITH ADRESS: " << &it << "\n";
+	cout << "IT1: ITERATOR STILL POINTS TO THE PREVIOUS OLD MEMORY ADRESS (INVALIDATED)" << endl;
+	std::cout << "AFTER NUMBER: " << *it1 << " WITH ADRESS: " << &it1 << "\n";
+
+	cout << "IT2: OTHER ITERATORS STAYS SAME (VALIDATED)" << endl;
+	std::cout << "AFTER NUMBER: " << *it2 << " WITH ADRESS: " << &it2 << "\n";
 
     cout << "\nFinished testing" << endl;
 
