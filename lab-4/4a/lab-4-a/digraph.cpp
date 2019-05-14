@@ -14,7 +14,7 @@ using namespace std;
 #include "digraph.h"
 #include "queue.h"
 
-const int INFINITY = 9999;
+const int INFNT = 9999;
 
 // -- CONSTRUCTORS
 
@@ -66,7 +66,37 @@ void Digraph::uwsssp(int s)
          return;
     }
 
-    // *** TODO ***
+	/// *** TODO ***
+	// To read file just do "..\digraph1.txt"
+
+	Queue<int> Q; 
+
+	for (int v = 1; v <= size; v++) {
+		dist[v] = INFNT;
+		path[v] = 0;
+	}
+
+	dist[s] = 0;
+	Q.enqueue(s);
+
+	while (!Q.isEmpty()) {
+		int v = Q.getFront();
+		Node *u = array[v].getFirst();
+		Q.dequeue();
+
+		while (u != nullptr) {
+
+			if (dist[u->vertex] == INFNT) {
+
+				dist[u->vertex] = dist[v] + 1;
+				path[u->vertex] = v;
+				Q.enqueue(u->vertex);
+			}
+
+			u = u->next;
+		}
+	}
+
 }
 
 // positive weighted single source shortest pats
