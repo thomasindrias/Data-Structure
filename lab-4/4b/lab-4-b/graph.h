@@ -29,6 +29,9 @@ public:
     // Prim's minimum spanning tree algorithm
     void mstPrim() const;
 
+	// Auxalliary function for returning smallest undone path
+	int find_smallest_undone_distance_vertex(int* dist, bool* done) const;
+
     // Kruskal's minimum spanning tree algorithm
     void mstKruskal() const;
 

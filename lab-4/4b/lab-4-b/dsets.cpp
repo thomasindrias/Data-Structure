@@ -42,21 +42,45 @@ void DSets::init()
     }
 }
 
+/*
+*************** Example illustration ***************
+		+----+----+----+---+----+---+---+---+
+size:	| -1 | -1 | -1 | 4 | -5 | 4 | 4 | 6 |
+		+----+----+----+---+----+---+---+---+
+vertex:	| 0  | 1  | 2  | 3 | 4  | 5 | 6 | 7 |
+		+----+----+----+---+----+---+---+---+
+*/
+
+
+
 // join sets named r and s where r != s
 // i.e. join trees with roots r and s
 void DSets::join(int r, int s)
 {
-    assert(r != s);
-    assert(r >= 1 && r <= size);
-    assert(s >= 1 && s <= size);
-    assert(array[r] < 0);
-    assert(array[s] < 0);
+	assert(r != s);
+	assert(r >= 1 && r <= size);
+	assert(s >= 1 && s <= size);
+	assert(array[r] < 0);
+	assert(array[s] < 0);
 
-    // simple union
-    array[r]  = s;
+	// simple union
+	//array[r] = s;
 
     // *** TODO ***
     // weighted union (by size)
+	
+	if (array[r] < array[s]) {
+
+		array[r] += array[s];
+		array[s] = r;
+	}
+	else {
+
+		array[s] += array[r];
+		array[r] = s;
+	}
+
+	// cout << "tree 1 (size): " << array[r] << "-" << r << " tree 2 (size): " << array[s] << ":" << s << endl;
 }
 
 // return name of current set for x
@@ -66,17 +90,27 @@ int DSets::find(int x)
     assert(x >= 1 && x <= size);
 
     // simple find
-    if (array[x] < 0)
-    {
-        return x;
-    }
-    else
-    {
-        return find(array[x]);
-    }
+    //if (array[x] < 0)
+    //{
+    //    return x;
+    //}
+    //else
+    //{
+    //    return find(array[x]);
+    //}
 
     // *** TODO ***
     // find with path compression
+
+
+	// recursively set array[x] equal to  the value returned by find. 
+	// x's parent link references it.
+	if (array[x] < 0){
+	    return x;
+	}
+	else{
+	    return array[x] = find(array[x]);
+	}
 }
 
 // just in case ...
