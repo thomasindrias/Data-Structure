@@ -65,10 +65,6 @@ void Digraph::uwsssp(int s)
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
          return;
     }
-
-	/// *** TODO ***
-	// To read file just do "..\digraph1.txt"
-
 	Queue<int> Q; 
 
 	for (int v = 1; v <= size; v++) {
@@ -93,10 +89,9 @@ void Digraph::uwsssp(int s)
 				Q.enqueue(u->vertex);
 			}
 
-			u = u->next;
+			u = array[v].getNext();
 		}
 	}
-
 }
 
 // positive weighted single source shortest pats
@@ -107,8 +102,44 @@ void Digraph::pwsssp(int s)
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
          return;
     }
+	
+	for (int v = 1; v <= size; v++) {
+		dist[v] = INFNT;
+		path[v] = 0;
+		done[v] = false;
+	}
 
-    // *** TODO ***
+	dist[s] = 0;
+	done[s] = true;
+	int v = s;
+
+	while (true)
+	{
+		Node *u = array[v].getFirst();
+		while (u != nullptr) {
+			if (done[u->vertex] == false && dist[u->vertex] > dist[v] + u->weight)
+			{
+				dist[u->vertex] = dist[v] + u->weight;
+				path[u->vertex] = v;
+			}
+			u = array[v].getNext();
+			
+		}	
+		v = find_smallest_undone_distance_vertex();
+			if (v == NULL) break; //exit the loop
+			done[v] = true;
+	}
+}
+int Digraph::find_smallest_undone_distance_vertex() { //Går nog att lösa på annat sätt!
+	int a = INFNT;
+	int b = NULL;
+	for (int v = 1; v <= size; v++) {
+		if (done[v] == false && dist[v] < a) {
+			a = dist[v];
+			b = v;
+		}			
+	}
+	return b;
 }
 
 // print graph
@@ -150,6 +181,10 @@ void Digraph::printPath(int t) const
          cout << "\nERROR: expected target t in range 1.." << size << " !" << endl;
          return;
     }
+	
+	if(path[t] != NULL)	printPath(path[t]);
+	cout << setw(3)<< t ;
 
     // *** TODO ***
+		// To read file just do "..\digraph1.txt"
 }
