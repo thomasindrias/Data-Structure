@@ -130,7 +130,7 @@ void Digraph::pwsssp(int s)
 			done[v] = true;
 	}
 }
-int Digraph::find_smallest_undone_distance_vertex() { //Går nog att lösa på annat sätt!
+int Digraph::find_smallest_undone_distance_vertex() { //Går nog att lösa på annat sätt!?!
 	int a = INFNT;
 	int b = NULL;
 	for (int v = 1; v <= size; v++) {
@@ -181,10 +181,12 @@ void Digraph::printPath(int t) const
          cout << "\nERROR: expected target t in range 1.." << size << " !" << endl;
          return;
     }
-	
-	if(path[t] != NULL)	printPath(path[t]);
-	cout << setw(3)<< t ;
-
-    // *** TODO ***
-		// To read file just do "..\digraph1.txt"
+	printOnlyPath(t);
+	cout << setw(3)<< "(" << dist[t] << ")";
 }
+// print shortest path from s to t
+void Digraph::printOnlyPath(int t) const
+{
+	if (path[t] != NULL)	printOnlyPath(path[t]);
+	cout << setw(3) << t;
+}		// To read file just do "..\digraph1.txt"
