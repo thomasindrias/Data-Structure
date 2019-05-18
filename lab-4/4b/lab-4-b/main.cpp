@@ -64,7 +64,7 @@ int main()
                 cout << "Bad choice!" << endl;
         }
     }
-
+	delete G;
     return 0;
 }
 
