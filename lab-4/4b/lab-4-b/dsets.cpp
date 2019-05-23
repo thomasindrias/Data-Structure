@@ -42,6 +42,7 @@ void DSets::init()
     }
 }
 
+
 /*
 *************** Example illustration ***************
 		+----+----+----+---+----+---+---+---+
@@ -49,9 +50,10 @@ size:	| -1 | -1 | -1 | 4 | -5 | 4 | 4 | 6 |
 		+----+----+----+---+----+---+---+---+
 vertex:	| 0  | 1  | 2  | 3 | 4  | 5 | 6 | 7 |
 		+----+----+----+---+----+---+---+---+
+		
+		* tree with root 4 contains 4 vertices (-5 including root)
+		* trees with root 0, 1 and 2 contains 0 vertices (-1 including root)
 */
-
-
 
 // join sets named r and s where r != s
 // i.e. join trees with roots r and s
@@ -62,9 +64,6 @@ void DSets::join(int r, int s)
 	assert(s >= 1 && s <= size);
 	assert(array[r] < 0);
 	assert(array[s] < 0);
-
-	// simple union
-	//array[r] = s;
 
     // *** TODO ***
     // weighted union (by size)
@@ -89,19 +88,8 @@ int DSets::find(int x)
 {
     assert(x >= 1 && x <= size);
 
-    // simple find
-    //if (array[x] < 0)
-    //{
-    //    return x;
-    //}
-    //else
-    //{
-    //    return find(array[x]);
-    //}
-
     // *** TODO ***
     // find with path compression
-
 
 	// recursively set array[x] equal to  the value returned by find. 
 	// x's parent link references it.

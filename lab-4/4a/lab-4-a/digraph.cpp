@@ -65,8 +65,19 @@ void Digraph::uwsssp(int s)
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
          return;
     }
+
+	/*
+	// Breadth-first search
+	// Process the vertices in layers:
+	// First, visit vertices closest to the start 
+	// Last, visit most distant vertices from the start
+	// Store the path and the length of each path
+	*/
+
 	Queue<int> Q; 
 
+	// Set default values for dist and path
+	// T(n) = O(n)
 	for (int v = 1; v <= size; v++) {
 		dist[v] = INFNT;
 		path[v] = 0;
@@ -75,13 +86,17 @@ void Digraph::uwsssp(int s)
 	dist[s] = 0;
 	Q.enqueue(s);
 
+	// if adjancency lists are used:
+	// T(n,m) = O(n + m), n = abs(v) and m = abs(e)
 	while (!Q.isEmpty()) {
+
 		int v = Q.getFront();
-		Node *u = array[v].getFirst();
+		Node *u = array[v].getFirst(); // set u to the first node of the list in slot v.
 		Q.dequeue();
 
 		while (u != nullptr) {
 
+			// If dist[u] == INFNT, then u has not been visited yet
 			if (dist[u->vertex] == INFNT) {
 
 				dist[u->vertex] = dist[v] + 1;
@@ -103,6 +118,8 @@ void Digraph::pwsssp(int s)
          return;
     }
 	
+	// Set default values for dist and path
+	// T(n) = O(n)
 	for (int v = 1; v <= size; v++) {
 		dist[v] = INFNT;
 		path[v] = 0;
@@ -113,6 +130,8 @@ void Digraph::pwsssp(int s)
 	done[s] = true;
 	int v = s;
 
+	// if adjancency lists are used:
+	// T(n,m) = O(n + m), n = abs(v) and m = abs(e)
 	while (true)
 	{
 		Node *u = array[v].getFirst();
@@ -124,21 +143,28 @@ void Digraph::pwsssp(int s)
 			}
 			u = array[v].getNext();
 			
-		}	
+		}
+
+		// T(n) = O(n) 
 		v = find_smallest_undone_distance_vertex();
+
 		if (v == 0) break; //exit the loop
 		done[v] = true;
 	}
 }
-int Digraph::find_smallest_undone_distance_vertex() { //Går nog att lösa på annat sätt!?!
+int Digraph::find_smallest_undone_distance_vertex() { // Finds the min in array dist
 	int a = INFNT;
 	int b = 0;
 	for (int v = 1; v <= size; v++) {
+		// check if vertex v is marked and that the current distance is smaller than
+		// the one already registered.
 		if (done[v] == false && dist[v] < a) {
 			a = dist[v];
 			b = v;
 		}			
 	}
+
+	// return the smallest undone vertex
 	return b;
 }
 

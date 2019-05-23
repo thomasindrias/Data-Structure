@@ -56,6 +56,8 @@ void Graph::removeEdge(int u, int v)
 }
 
 // Prim's minimum spanning tree algorithm
+// Graph G = (V,E), with V = abs(n) and E = abs(m)
+// Time complexity: T(n, m) = O(n^2) for dense graphs
 void Graph::mstPrim() const
 {
     // *** TODO ***
@@ -92,8 +94,9 @@ void Graph::mstPrim() const
 			u = u->next;
 		}
 
-		//call auxillary function 
+		//find min in array dist
 		v = find_smallest_undone_distance_vertex(dist, done);
+
 		if (v == 0) break; //exit the loop
 		done[v] = true;
 
@@ -112,7 +115,6 @@ void Graph::mstPrim() const
 
 int Graph::find_smallest_undone_distance_vertex(int* dist, bool* done) const
 { 
-	//Går nog att lösa på annat sätt!?!
 	int smallest = INFNT;
 	int v = 0;
 
@@ -127,16 +129,18 @@ int Graph::find_smallest_undone_distance_vertex(int* dist, bool* done) const
 }
 
 // Kruskal's minimum spanning tree algorithm
+// Graph G = (V, E), with B = abs(n) and E = abs(m)
 void Graph::mstKruskal() const
 {
     // *** TODO ***
 
-	Heap<Edge> H;
-	DSets D(size);
+	Heap<Edge> H; // min-heap
+	DSets D(size); // n trees with one node each
 
 	int counter = 0, totalWeight = 0;
 
-	// Heap<Edges>
+	// Build the heap with all the edges
+	// T(m) = O(m) (E = abs(m))
 	for (int v = 1; v <= size; v++) {
 		
 		Node *u = array[v].getFirst();
@@ -151,22 +155,24 @@ void Graph::mstKruskal() const
 	}
 
 	Edge e;
-	while (counter < size - 1) {
-		e = H.deleteMin();
+	while (counter < size - 1) { // n-1 edges
+		e = H.deleteMin(); // edge with lowest cost - T(m) = O(log m). (E = abs(m))
 
 		// (v: head, u: tail)
+		// u and v in the same tree?
 		if (D.find(e.head) != D.find(e.tail)) {
 
 			cout << e << endl; //print out Edge
 
 			totalWeight += e.weight;
 
+			// merge the two trees
 			D.join(D.find(e.head), D.find(e.tail));
 			counter++;
 		}
 	}
 	
-	cout << "\nTotal weight: " << totalWeight << endl;
+	cout << "\nTotal weight: " << totalWeight << endl; // print out the total weight
 }
 
 // print graph
